@@ -1,23 +1,21 @@
 'use client';
-import { useUserContext } from '@/contexts/user-context';
-import { TLoginSchema, loginSchema } from '@/lib/types';
+import { TSignUpSchema, signUpSchema } from '@/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
-export default function LoginForm() {
-  const { user, setUser } = useUserContext();
+export default function SignupForm() {
   const { 
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    setError } = useForm<TLoginSchema>({
-    resolver: zodResolver(loginSchema)
+    setError } = useForm<TSignUpSchema>({
+    resolver: zodResolver(signUpSchema)
   });
   
-  const onSubmit = async (data: TLoginSchema) => {
-    const response = await fetch('/api/login', {
+  const onSubmit = async (data: TSignUpSchema) => {
+    const response = await fetch('/api/signup', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
@@ -26,9 +24,7 @@ export default function LoginForm() {
     });
     const responseData = await response.json();
     console.log(responseData);
-    localStorage.setItem('user', JSON.stringify(responseData.response));
-    setUser(responseData.response);
-    reset();
+
     // TODO: Handle success and error properly
     /* if (!response.ok) {
       alert("submitting form failed");
@@ -46,10 +42,17 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-y-2'>
+      <input {...register("name")}
+        type="text"
+        placeholder="Name"
+        className="text-black px-4 py-2 rounded"/>
+        {errors.name && (
+            <span className='text-red-500'>${errors.name.message}</span>
+        )}
       <input {...register("email")} 
-      type="email"
-      placeholder="Email"
-      className="text-black px-4 py-2 rounded"/>
+        type="email"
+        placeholder="Email"
+        className="text-black px-4 py-2 rounded"/>
       {errors.email && (
         <span className='text-red-500'>{errors.email.message}</span>
       )}

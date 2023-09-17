@@ -1,17 +1,25 @@
-'use client';
-import Button from "../components/Button";
+import { redirect } from "next/navigation";
 import LoginForm from "../components/LoginForm";
+import { cookies } from "next/headers";
 
-function handleClick() {
-  console.log('button clicked')
+async function checkSession() {
+  const cookiesList = cookies()
+    const hasCookie = cookiesList.has('loggedIn')
+    return hasCookie
 }
-export default function Home() {
+
+export default async function Home() {
+  const hasCookie = await checkSession()
+  if (hasCookie) {
+    redirect('/posts')
+  } else {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {/* <h1>this is the login page</h1> */}
-      {/* <Button text="Proceed to Login" backgroundColor="blue" onClick={handleClick}/> */}
-      {/* <Post /> */}
-      <LoginForm />
-    </main>
-  )
+      <main className="flex flex-col items-center justify-between p-24">
+        {/* <h1>this is the login page</h1> */}
+        {/* <Button text="Proceed to Login" backgroundColor="blue" onClick={handleClick}/> */}
+        {/* <Post /> */}
+        <LoginForm />
+      </main>
+    )
+  }
 }

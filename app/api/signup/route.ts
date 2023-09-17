@@ -1,11 +1,10 @@
 import { setTokenCookie } from "@/app/_services/api";
-import { loginResponseSchema, loginSchema } from "@/lib/types";
+import { signUpSchema, signupResponseSchema } from "@/lib/types";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request): Promise<NextResponse>{
     const body:unknown = await request.json();
-    // console.log(body);
-    const result = loginSchema.safeParse(body);
+    const result = signUpSchema.safeParse(body);
 
     let zodErrors = {};
     // Can also use .flatten() to get all errors
@@ -17,38 +16,32 @@ export async function POST(request: Request): Promise<NextResponse>{
             Object.keys(zodErrors).length > 0
             ? {errors: zodErrors}
             : {success: true}
-        );    
+        );
     }
 
-//    console.log(result.data)
-    // TODO: Change the post request to the correct endpoint
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authentication`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            strategy: 'local',
+            name: result.data.name,
             email: result.data.email,
             password: result.data.password,
         })
     });
+
     const resData: unknown = await res.json();
-    // console.log(resData)
-    const parsedResponse: any = loginResponseSchema.safeParse(resData);
-    console.log(parsedResponse.data)
-    let zorResponseErrors = {};
+    const parsedResponse:any  = signupResponseSchema.safeParse(resData);
+    let zodResponseErrors = {};
     if(!parsedResponse.success){
-        console.log('Unsuccessful Login')
+        console.log('Unsuccessful Signup')
         console.log(parsedResponse.error.flatten())
     } else {
-        console.log('Successful Login')
+        console.log('Successful Signup')
         setTokenCookie('accessToken', parsedResponse.data.accessToken, true).then(() => {
             console.log('Cookie Set')
         });
-        setTokenCookie('loggedIn', 'true').then(() => {
-            console.log('User session valid Cookie Set')
-        });
     }
-    // TODO: Handle Failed Login gracefully
-    
-    return NextResponse.json({response: parsedResponse.data?.user});
-} 
+    return NextResponse.json({response: {id:parsedResponse.data.id,
+        name:parsedResponse.data.name,
+        email:parsedResponse.data.email}});
+}
