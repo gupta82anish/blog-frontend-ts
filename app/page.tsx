@@ -4,8 +4,8 @@ import { cookies } from "next/headers";
 
 async function checkSession() {
   const cookiesList = cookies()
-    const hasCookie = cookiesList.has('loggedIn')
-    return hasCookie
+  const hasCookie = cookiesList.has('loggedIn')
+  return hasCookie
 }
 
 export default async function Home() {

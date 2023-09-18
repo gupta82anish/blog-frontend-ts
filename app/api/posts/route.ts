@@ -1,7 +1,16 @@
 import { blogPostSchema } from "@/lib/types";
-import { NextResponse } from "next/server";
 import { parse } from "cookie";
-export async function POST(request: Request): Promise<NextResponse>{
+import { NextResponse } from "next/server";
+
+export async function GET(request: Request): Promise<NextResponse> {
+    // console.log(request)
+    // const { id } = request.;
+    // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`);
+    // const data = await res.json();
+    return NextResponse.json({});
+}
+
+export async function PATCH(request: Request): Promise<NextResponse>{
     const body:unknown = await request.json();
     const result: any = blogPostSchema.safeParse(body);
     console.log(result)
@@ -10,8 +19,8 @@ export async function POST(request: Request): Promise<NextResponse>{
     const accessToken = parse(request.headers.get('cookie') || '').accessToken;
     console.log(accessToken)
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`, {
-        method: 'POST',
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`, {
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`,
@@ -22,9 +31,5 @@ export async function POST(request: Request): Promise<NextResponse>{
             content: result.data.content,
             })
     });
-
-    const responseData = await response.json();
-
-    console.log(responseData)
     return NextResponse.json({success: true});
 }

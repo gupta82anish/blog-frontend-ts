@@ -1,5 +1,6 @@
 import { setTokenCookie } from "@/app/_services/api";
 import { loginResponseSchema, loginSchema } from "@/lib/types";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request): Promise<NextResponse>{
@@ -51,4 +52,10 @@ export async function POST(request: Request): Promise<NextResponse>{
     // TODO: Handle Failed Login gracefully
     
     return NextResponse.json({response: parsedResponse.data?.user});
-} 
+}
+
+export async function DELETE(request: Request): Promise<NextResponse>{
+    cookies().delete('loggedIn');
+    cookies().delete('accessToken');
+    return NextResponse.json({response: 'ok'});
+}
