@@ -1,8 +1,23 @@
 'use client'
+import { useUserContext } from "@/contexts/user-context";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 
 export default function Navbar() {
+    const {user, setUser } = useUserContext();
+    const router = useRouter();
+
+    useEffect(() => {
+        const userString = localStorage.getItem('user');
+        if (userString) {
+            console.log(userString);
+            setUser(JSON.parse(userString));
+        } else{
+            router.push('/');
+        }
+    }, []);
 
     function logout() {
         const res = fetch('/api/login', {
@@ -20,6 +35,7 @@ export default function Navbar() {
           <Link href="/" className="text-white text-2xl font-bold">
             Home
           </Link>
+          <div className="flex items-center">{user.name}</div>
           <button onClick={logout}
           className="bg-red-500 text-white py-2 px-4 rounded">Logout</button>
         </div>

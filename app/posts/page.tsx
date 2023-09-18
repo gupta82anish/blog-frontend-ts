@@ -1,12 +1,13 @@
 import PostTile from "@/components/PostTile"
 import { checkSession, getPosts } from "../_services/api"
 import { TBlogPostSchema } from "@/lib/types"
+import { redirect } from "next/navigation"
 export default async function Home() {
 
   const loggedIn = await checkSession()
   console.log(loggedIn)
-  const response = await getPosts(1, 10)
-  // console.log(response)
+  if(loggedIn === true){
+    const response = await getPosts(1, 10)
   return (
     <main className="container mx-auto p-4">
       {response.map((post: TBlogPostSchema) => (
@@ -14,4 +15,7 @@ export default async function Home() {
       ))}
     </main>
   )
+      } else {
+        redirect('/')
+      }
 }

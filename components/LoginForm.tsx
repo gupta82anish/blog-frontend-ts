@@ -2,10 +2,12 @@
 import { useUserContext } from '@/contexts/user-context';
 import { TLoginSchema, loginSchema } from '@/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { set, useForm } from 'react-hook-form';
 
 export default function LoginForm() {
+  const router = useRouter();
   const { user, setUser } = useUserContext();
   const { 
     register,
@@ -29,6 +31,7 @@ export default function LoginForm() {
     localStorage.setItem('user', JSON.stringify(responseData.response));
     setUser(responseData.response);
     reset();
+    router.push('/posts');
     // TODO: Handle success and error properly
     /* if (!response.ok) {
       alert("submitting form failed");

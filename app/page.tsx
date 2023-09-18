@@ -15,9 +15,6 @@ export default async function Home() {
   } else {
   return (
       <main className="flex flex-col items-center justify-between p-24">
-        {/* <h1>this is the login page</h1> */}
-        {/* <Button text="Proceed to Login" backgroundColor="blue" onClick={handleClick}/> */}
-        {/* <Post /> */}
         <LoginForm />
       </main>
     )
