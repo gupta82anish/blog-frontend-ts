@@ -8,13 +8,14 @@ export async function getPosts(page: number, limit: number): Promise<[]> {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${cookie?.value}`
-        }
+        },
+        cache: 'no-store'
     })
     const data = await res.json();
     return data?.data;
 };
 
-export async function getAllPostsIds(): Promise<[]>{
+/* export async function getAllPostsIds(): Promise<[]>{
     const cookie = cookies().get('accessToken');
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts?$select[]=id`,{
         method: 'GET',
@@ -27,7 +28,7 @@ export async function getAllPostsIds(): Promise<[]>{
     return data?.data.map((item: { id: number}) => {
         return{id: item.id.toString()}
     })
-}
+} */
 
 export async function getPost(id: number): Promise<TBlogPostSchema> {
     const cookie = cookies().get('accessToken');
@@ -35,7 +36,8 @@ export async function getPost(id: number): Promise<TBlogPostSchema> {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${cookie?.value}`
-        }
+        },
+        cache: 'no-store'
     })
 
     return res.json();

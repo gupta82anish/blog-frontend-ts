@@ -21,6 +21,8 @@ export async function POST(request: Request): Promise<NextResponse>{
             description: result.data.description,
             content: result.data.content,
             })
+            ,
+            cache: 'no-store'
     });
 
     const responseData = await response.json();

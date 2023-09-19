@@ -2,6 +2,10 @@ import PostTile from "@/components/PostTile"
 import { checkSession, getPosts } from "../_services/api"
 import { TBlogPostSchema } from "@/lib/types"
 import { redirect } from "next/navigation"
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function Home() {
 
   const loggedIn = await checkSession()

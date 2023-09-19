@@ -40,6 +40,9 @@ export async function POST(request: Request): Promise<NextResponse>{
         setTokenCookie('accessToken', parsedResponse.data.accessToken, true).then(() => {
             console.log('Cookie Set')
         });
+        setTokenCookie('loggedIn', 'true').then(() => {
+            console.log('User session valid Cookie Set')
+        });
     }
     return NextResponse.json({response: {id:parsedResponse.data.id,
         name:parsedResponse.data.name,

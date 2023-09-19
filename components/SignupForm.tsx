@@ -1,10 +1,14 @@
 'use client';
+import { useUserContext } from '@/contexts/user-context';
 import { TSignUpSchema, signUpSchema } from '@/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 
 export default function SignupForm() {
+  const { user, setUser } = useUserContext();
+  const router = useRouter();
   const { 
     register,
     handleSubmit,
@@ -24,7 +28,9 @@ export default function SignupForm() {
     });
     const responseData = await response.json();
     console.log(responseData);
-
+    localStorage.setItem('user', JSON.stringify(responseData.response)); 
+    setUser(responseData.response);
+    router.push('/posts')
     // TODO: Handle success and error properly
     /* if (!response.ok) {
       alert("submitting form failed");

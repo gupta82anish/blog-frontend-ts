@@ -2,37 +2,48 @@
 import { useUserContext } from "@/contexts/user-context";
 import { TBlogPostSchema, blogPostSchema } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 type EditBlogPostProps = {
     title: string;
     description: string;
     content: string;
+    postId: number;
 }
 
-export default function EditBlogPost({title, description, content}: EditBlogPostProps) {
+export default function EditBlogPost({title, description, content, postId}: EditBlogPostProps) {
 
-    const { user, setUser } = useUserContext();
-
+    // const { user, setUser } = useUserContext();
+    const router = useRouter();
     const { register,
         handleSubmit,
         formState: { errors, isSubmitting },
-        reset,
         setError } = useForm<TBlogPostSchema>({
+            defaultValues: {
+                title: title,
+                description: description,
+                content: content
+            },
         resolver: zodResolver(blogPostSchema)
     });
 
     const onSubmit = async (data: TBlogPostSchema) => {
+        console.log('ON SUBMIT')
         const response = await fetch('/api/posts', {
-            method: 'POST',
+            method: 'PATCH',
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
+                'post-id': postId.toString()
             },
+            cache: 'no-store'
         });
         const responseData = await response.json();
         console.log(responseData);
-        reset();
+        router.push(`/posts/${postId}`)
+        // reset();
     }
 
     return (
@@ -52,7 +63,7 @@ export default function EditBlogPost({title, description, content}: EditBlogPost
                     <span className="text-red-500">{errors.description.message}</span>
                 )}
             <textarea {...register("content")}
-                placeholder="Content || You can use Markdown formatting" className="w-full text-black px-4 py-2 rounded border"/>
+                placeholder="Content || You can use Markdown formatting" className="w-full h-3/6 text-black px-4 py-2 rounded border cursor-help"/>
             {errors.content && (
                 <span className="text-red-500">{errors.content.message}</span>
             )}
