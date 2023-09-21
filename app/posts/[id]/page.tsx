@@ -3,6 +3,7 @@ import Button from "@/components/Button"
 import { TBlogPostSchema } from "@/lib/types"
 import { remark } from "remark"
 import html from "remark-html"
+import emoji from "remark-emoji"
 // import matter from "gray-matter"
 import matter  from "gray-matter"
 import { redirect } from "next/navigation"
@@ -22,7 +23,7 @@ export default async function Post({ params }: { params : { id: number } }){
         // console.log(content)
         const matterResult = matter(content)
         // console.log(matterResult)
-        const processedData = await remark().use(html).process(matterResult.content);
+        const processedData = await remark().use(emoji, { padSpaceAfter: true}).use(html).process(matterResult.content);
         const contentHTML = processedData.toString()
 
         // console.log(contentHTML)
