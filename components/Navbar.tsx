@@ -4,12 +4,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { set } from "zod";
-
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
     const {user, setUser } = useUserContext();
     const router = useRouter();
-
+    const pathname = usePathname();
     useEffect(() => {
         const userString = localStorage.getItem('user');
         if (userString && userString !== 'undefined') {
@@ -18,7 +18,9 @@ export default function Navbar() {
         } else{
             console.log('no user');
             setUser({});
-            router.push('/');
+            if(pathname !== '/signup'){
+                router.push('/');
+            }
         }
     }, []);
 
@@ -34,7 +36,7 @@ export default function Navbar() {
         })
     }
     return (
-        <nav className="bg-blue-600 p-4">
+        <nav className="fixed w-full bg-blue-600 p-4">
         <div className="container mx-auto flex justify-between items-center">
             {Object.keys(user).length > 0 ?
             <>

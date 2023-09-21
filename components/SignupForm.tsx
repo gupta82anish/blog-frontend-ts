@@ -51,25 +51,25 @@ export default function SignupForm() {
       <input {...register("name")}
         type="text"
         placeholder="Name"
-        className="text-black px-4 py-2 rounded"/>
+        className="text-black p-4 text-lg rounded border-2 w-full focus:border-blue-500 lg:text-xl md:text-lg"/>
         {errors.name && (
-            <span className='text-red-500'>${errors.name.message}</span>
+            <span className='text-red-500'>{errors.name.message}</span>
         )}
       <input {...register("email")} 
         type="email"
         placeholder="Email"
-        className="text-black px-4 py-2 rounded"/>
+        className="text-black p-4 text-lg rounded border-2 w-full focus:border-blue-500 lg:text-xl md:text-lg"/>
       {errors.email && (
         <span className='text-red-500'>{errors.email.message}</span>
       )}
       <input {...register("password")}
        type='password'
        placeholder='min. 8 character Password'
-       className="text-black px-4 py-2 rounded"/>
+       className="text-black p-4 text-lg rounded border-2 w-full focus:border-blue-500 lg:text-xl md:text-lg"/>
        {errors.password && (
         <span className='text-red-500'>{errors.password.message}</span>
        )}
-      <button disabled={isSubmitting} type="submit" className='bg-blue-500 disabled:bg-gray-500 py-2 rounded'>Submit</button>
+      <button disabled={isSubmitting} type="submit" className='bg-blue-500 text-lg hover:bg-blue-600 disabled:bg-gray-500 py-2 rounded text-white w-full'>Submit</button>
     </form>
   );
 }
