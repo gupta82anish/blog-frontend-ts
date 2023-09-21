@@ -2,11 +2,12 @@
 import { useUserContext } from "@/contexts/user-context";
 import { TBlogPostSchema, blogPostSchema } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 export default function AddBlogPost() {
 
     const { user, setUser } = useUserContext();
-
+    const router = useRouter();
     const { register,
         handleSubmit,
         formState: { errors, isSubmitting },
@@ -18,14 +19,15 @@ export default function AddBlogPost() {
     const onSubmit = async (data: TBlogPostSchema) => {
         const response = await fetch('/api/createpost', {
             method: 'POST',
-            body: JSON.stringify(data),
+            body: JSON.stringify({...data, id: user.id}),
             headers: {
                 'Content-Type': 'application/json',
             },
         });
         const responseData = await response.json();
-        console.log(responseData);
-        reset();
+        console.log(responseData.response.id);
+        router.push(`/posts/${responseData.response.id}`)
+        // reset();
     }
 
     return (

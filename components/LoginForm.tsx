@@ -28,10 +28,15 @@ export default function LoginForm() {
     });
     const responseData = await response.json();
     console.log(responseData);
-    localStorage.setItem('user', JSON.stringify(responseData.response));
-    setUser(responseData.response);
-    reset();
-    router.push('/posts');
+    if(responseData.failure) {
+      console.log(responseData)
+    } else {
+      localStorage.setItem('user', JSON.stringify(responseData.response));
+      setUser(responseData.response);
+      reset();
+      router.push('/posts');
+    }
+    
     // TODO: Handle success and error properly
     /* if (!response.ok) {
       alert("submitting form failed");

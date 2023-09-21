@@ -20,6 +20,7 @@ export async function POST(request: Request): Promise<NextResponse>{
             title: result.data.title,
             description: result.data.description,
             content: result.data.content,
+             author: result.data.id
             })
             ,
             cache: 'no-store'
@@ -28,5 +29,5 @@ export async function POST(request: Request): Promise<NextResponse>{
     const responseData = await response.json();
 
     console.log(responseData)
-    return NextResponse.json({success: true});
+    return NextResponse.json({response: responseData});
 }

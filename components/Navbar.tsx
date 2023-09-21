@@ -12,7 +12,7 @@ export default function Navbar() {
 
     useEffect(() => {
         const userString = localStorage.getItem('user');
-        if (userString) {
+        if (userString && userString !== 'undefined') {
             console.log(userString);
             setUser(JSON.parse(userString));
         } else{
@@ -41,19 +41,18 @@ export default function Navbar() {
                 <Link href="/posts" className="text-white text-2xl font-bold">
                     Home
                 </Link>
-            </> :
+                <div className="flex items-center">{user.name}</div>
+                <button className="bg-orange-500 text-white py-2 px-4 rounded" onClick={() => router.push('/posts/createpost')}>Create Post</button>
+                <button onClick={logout} className="bg-red-500 text-white py-2 px-4 rounded cursor-help">Logout</button>
+            </> 
+            :
+            <>
                 <Link href="/" className="text-white text-2xl font-bold">
                     Home
                 </Link>
-            }
-            {Object.keys(user).length > 0 ? 
-            <>
-                <div className="flex items-center">{user.name}</div> 
-                    <button onClick={logout} className="bg-red-500 text-white py-2 px-4 rounded">Logout</button>
+                <button onClick={() => router.push('/signup')} className="bg-red-500 text-white py-2 px-4 rounded">Register</button>
             </>
-            :
-            <button onClick={() => router.push('/signup')} className="bg-red-500 text-white py-2 px-4 rounded">Register</button>
-                }
+            }
         </div>
       </nav>
     )

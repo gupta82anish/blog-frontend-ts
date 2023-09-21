@@ -37,3 +37,25 @@ export async function PATCH(request: Request): Promise<NextResponse>{
     revalidatePath(`/posts/${postId}`)
     return NextResponse.json({success: true});
 }
+
+export async function DELETE(request: Request): Promise<NextResponse>{
+    console.log('DELETE')
+    // const body:unknown = await request.json();
+    // console.log(body)
+    const accessToken = parse(request.headers.get('cookie') || '').accessToken;
+    console.log(request.headers)
+    const postId = request.headers.get('post-id');
+    console.log('POST ID',postId)
+    console.log(accessToken)
+    // TODO: Handle Failure
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${postId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        },
+        cache: 'no-store'
+    });
+    revalidatePath(`/posts`)
+    return NextResponse.json({success: true});
+}

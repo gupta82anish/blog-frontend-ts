@@ -40,6 +40,7 @@ export async function POST(request: Request): Promise<NextResponse>{
     if(!parsedResponse.success){
         console.log('Unsuccessful Login')
         console.log(parsedResponse.error.flatten())
+        return NextResponse.json({failure: true});
     } else {
         console.log('Successful Login')
         setTokenCookie('accessToken', parsedResponse.data.accessToken, true).then(() => {

@@ -31,7 +31,8 @@ export default async function Post({ params }: { params : { id: number } }){
                 <div className="flex flex-row justify-around items-baseline">
                     <h1 className="max-w-9xl px-4 my-12 font-extrabold text-3xl">{title}</h1>
                     <p className="font-semibold items-center">{description}</p>
-                    <Button text="Edit" functionality={"edit"} postId={id} className="self-end bg-green-500"/>
+                    <Button text="Edit" functionality={"edit"} postId={id} className="self-end bg-green-500" author={author}/>
+                    <Button text="Delete" functionality={"delete"} postId={id} className="self-end bg-red-500" author={author}/>
                 </div>
                 <div className="prose prose-lg max-w-full mx-auto" dangerouslySetInnerHTML={{ __html: contentHTML }} />
                 
