@@ -19,7 +19,12 @@ export default async function Post({ params }: { params : { id: number } }){
         const { title, description, content, author } = await getPost(id)
         console.log('From page', id)
         return (
-            <EditBlogPost title={title} description={description} content={content} postId={id} />
+            <main className="flex flex-col items-start justify-start p-4 h-screen">
+            <div className="container max-w-none bg-white p-8 rounded-lg shadow-md space-y-4">
+                <h1 className="text-2xl font-semibold mb-4 text-black">Edit post</h1>
+                <EditBlogPost title={title} description={description} content={content} postId={id} />
+            </div>
+        </main>
         )
     } else {
         console.log('Not logged in')

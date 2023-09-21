@@ -17,6 +17,11 @@ export const blogPostSchema = z.object({
     description: z.string().min(10, "Description must be at least 10 characters long"),
     content: z.string().min(20, "Content must be at least 20 characters long"),
     author: z.number().optional(),
+    authorDetails: z.object({
+        id: z.number(),
+        name: z.string(),
+        email: z.string().email(),
+    }).optional(),
     created_at: z.string().optional(),
     updated_at: z.string().optional(),
     });

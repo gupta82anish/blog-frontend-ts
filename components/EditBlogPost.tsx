@@ -47,27 +47,27 @@ export default function EditBlogPost({title, description, content, postId}: Edit
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center max-w-2xl gap-y-2">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center gap-y-4 p-4 h-full w-auto">
             <input {...register("title")} 
                 type="text"
                 placeholder="Title"
-                className="text-black px-4 py-2 rounded"/>
+                className="w-full text-black px-4 py-2 rounded border focus:border-blue-500 focus:outline-none"/>
                 {errors.title && (
                     <span className="text-red-500">{errors.title.message}</span>
                 )}
             <input {...register("description")} 
                 type="text"
                 placeholder="Description" 
-                className="text-black px-4 py-2 rounded" />
+                className="w-full text-black px-4 py-2 rounded border focus:border-blue-500 focus:outline-noned" />
                 {errors.description && (
                     <span className="text-red-500">{errors.description.message}</span>
                 )}
             <textarea {...register("content")}
-                placeholder="Content || You can use Markdown formatting" className="w-full h-3/6 text-black px-4 py-2 rounded border cursor-help"/>
+                placeholder="Content || You can use Markdown formatting" className="w-full h-32 text-black px-4 py-2 rounded border focus:border-blue-500 focus:outline-none"/>
             {errors.content && (
                 <span className="text-red-500">{errors.content.message}</span>
             )}
-            <button disabled={isSubmitting} type="submit" className="bg-blue-500 disabled:bg-gray-500 py-2 rounded">Create Post</button>
+            <button disabled={isSubmitting} type="submit" className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-gray-500 py-2 rounded text-white">Submit Edit</button>
         </form>
     );
 }

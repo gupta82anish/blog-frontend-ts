@@ -34,7 +34,7 @@ export async function PATCH(request: Request): Promise<NextResponse>{
             }),
         cache: 'no-store'
     });
-    revalidatePath(`/posts/${postId}`)
+    revalidatePath(`/posts/${postId}/edit`)
     return NextResponse.json({success: true});
 }
 

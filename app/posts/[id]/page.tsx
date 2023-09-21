@@ -17,7 +17,7 @@ export default async function Post({ params }: { params : { id: number } }){
     const loggedIn = await checkSession();
     if(loggedIn === true){
         const { id } = params
-        const { title, description, content, author } = await getPost(id)    
+        const { title, description, content, author, authorDetails } = await getPost(id)    
         // console.log('From page', id)
         // console.log(content)
         const matterResult = matter(content)
@@ -27,20 +27,23 @@ export default async function Post({ params }: { params : { id: number } }){
 
         // console.log(contentHTML)
         return (
-            <main className="p-5 bg-white text-black">
-                <div className="flex flex-row justify-around items-baseline">
-                    <h1 className="max-w-9xl px-4 my-12 font-extrabold text-3xl">{title}</h1>
-                    <p className="font-semibold items-center">{description}</p>
-                    <Button text="Edit" functionality={"edit"} postId={id} className="self-end bg-green-500" author={author}/>
-                    <Button text="Delete" functionality={"delete"} postId={id} className="self-end bg-red-500" author={author}/>
+            <main className="p-8 bg-white text-black max-w-screen-lg mx-auto">
+                <div className="mb-8">
+                    <h1 className="text-4xl font-extrabold mb-4">{title}</h1>
+                    <p className="text-lg font-medium mb-4">{description}</p>
+                    <span className="text-sm text-gray-500">Written by {authorDetails?.name}</span>
                 </div>
-                <div className="prose prose-lg max-w-full mx-auto" dangerouslySetInnerHTML={{ __html: contentHTML }} />
-                
+                <div className="prose prose-lg mx-auto mb-8" dangerouslySetInnerHTML={{ __html: contentHTML }} />
+
+                <div className="flex justify-between">
+                    <Button text="Edit" functionality={"edit"} postId={id} className="bg-green-500 text-white px-4 py-2 rounded" author={author} />
+                    <Button text="Delete" functionality={"delete"} postId={id} className="bg-red-500 text-white px-4 py-2 rounded" author={author} />
+                </div>
             </main>
-        )
+        );
     } else {
-        console.log('Not logged in')
-        redirect('/')
+        console.log('Not logged in');
+        redirect('/');
     }
     // const { title, description, content, author } = await getPost(id)
 }

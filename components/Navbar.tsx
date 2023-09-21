@@ -36,26 +36,30 @@ export default function Navbar() {
         })
     }
     return (
-        <nav className="fixed w-full bg-blue-600 p-4">
-        <div className="container mx-auto flex justify-between items-center">
-            {Object.keys(user).length > 0 ?
-            <>
-                <Link href="/posts" className="text-white text-2xl font-bold">
-                    Home
-                </Link>
-                <div className="flex items-center">{user.name}</div>
-                <button className="bg-orange-500 text-white py-2 px-4 rounded" onClick={() => router.push('/posts/createpost')}>Create Post</button>
-                <button onClick={logout} className="bg-red-500 text-white py-2 px-4 rounded cursor-help">Logout</button>
-            </> 
-            :
-            <>
-                <Link href="/" className="text-white text-2xl font-bold">
-                    Home
-                </Link>
-                <button onClick={() => router.push('/signup')} className="bg-red-500 text-white py-2 px-4 rounded">Register</button>
-            </>
-            }
-        </div>
-      </nav>
+        <nav className="fixed top-0 w-full bg-blue-600 p-4">
+            <div className="container mx-auto flex justify-between items-center">
+                {Object.keys(user).length > 0 ?
+                <>
+                    <Link href="/posts" className="text-white text-2xl font-bold">
+                        Home
+                    </Link>
+                    <div className="flex items-center">{user.name}</div>
+                    <button className="bg-orange-500 text-white py-2 px-4 rounded" onClick={() => router.push('/posts/createpost')}>Create Post</button>
+                    <button onClick={logout} className="bg-red-500 text-white py-2 px-4 rounded cursor-help">Logout</button>
+                </> 
+                :
+                <>
+                    <Link href="/" className="text-white text-2xl font-bold">
+                        Home
+                    </Link>
+                    {pathname !== '/signup' ?
+                    <button onClick={() => router.push('/signup')} className="bg-red-500 text-white py-2 px-4 rounded">Register</button>
+                    :
+                    <button onClick={() => router.push('/')} className="bg-red-500 text-white py-2 px-4 rounded">Login</button>
+                    }
+                </>
+                }
+            </div>
+        </nav>
     )
 }
