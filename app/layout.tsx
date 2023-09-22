@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <UserContextProvider>
           <Navbar />
-          <div className="mt-16">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-16 sm:mt-20">
             {children}
           </div>
         </UserContextProvider>
