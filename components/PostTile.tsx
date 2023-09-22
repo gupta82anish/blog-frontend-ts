@@ -18,7 +18,7 @@ export default function PostTile({ postId, title, description, authorDetails, cr
     const dateObj: Date = new Date(created_at);
     const dateString = dateObj.toLocaleDateString();
     return (
-        <Link href={`/posts/${postId}`} className="basis-80 flex-grow-0 flex-shrink-0 cursor-pointer hover:shadow-lg transition duration-300 flex border rounded-lg overflow-hidden shadow-md bg-white h-[250px]">
+        <Link href={`/posts/${postId}`} className="basis-80 flex-grow-0 flex-shrink-0 cursor-pointer hover:shadow-lg transition duration-300 flex border rounded-lg overflow-hidden shadow-md bg-white h-[300px]">
           {/* <div > */}
             <div className="bg-blue-500 w-1"></div>
             <div className="p-6 flex flex-col justify-between w-full h-full">
