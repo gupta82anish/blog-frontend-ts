@@ -3,12 +3,13 @@ import { useUserContext } from '@/contexts/user-context';
 import { TLoginSchema, loginSchema } from '@/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import { set, useForm } from 'react-hook-form';
 
 export default function LoginForm() {
   const router = useRouter();
   const { user, setUser } = useUserContext();
+  const [ success, setSuccess ] = useState(true);
   const { 
     register,
     handleSubmit,
@@ -30,26 +31,15 @@ export default function LoginForm() {
     console.log(responseData);
     if(responseData.failure) {
       console.log(responseData)
+      setSuccess(false);
     } else {
       localStorage.setItem('user', JSON.stringify(responseData.response));
-    setUser(responseData.response);
-    reset();
-    router.push('/posts');
+      setUser(responseData.response);
+      reset();
+      router.push('/posts');
     }
     
-    // TODO: Handle success and error properly
-    /* if (!response.ok) {
-      alert("submitting form failed");
-      return;
-    }
-
-    if(responseData.errors) {
-      const errors = responseData.errors;
-      setError("email", {
-        type: "server",
-        message: responseData.error
-      })
-    } */
+ 
   }
 
   return (
@@ -76,7 +66,9 @@ export default function LoginForm() {
       {errors.password && (
         <span className="text-red-500 text-sm">{errors.password.message}</span>
       )}
-
+      { !success && (
+        <span className="text-red-500 text-sm">Incorrect Email or password</span>
+      )}
       <button 
         disabled={isSubmitting} 
         type="submit" 

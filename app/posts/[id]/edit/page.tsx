@@ -1,5 +1,6 @@
 import { checkSession, getPost } from "@/app/_services/api"
 import EditBlogPost from "@/components/EditBlogPost"
+import ErrorPage from "@/components/ErrorPage";
 import { TBlogPostSchema } from "@/lib/types"
 import { redirect } from "next/navigation";
 
@@ -16,7 +17,14 @@ export default async function Post({ params }: { params : { id: number } }){
     const loggedIn = await checkSession();
     if(loggedIn === true){
         const { id } = params
-        const { title, description, content, author } = await getPost(id)
+
+        const response = await getPost(id)
+        if('code' in response && response.code === 404){
+            return <ErrorPage />
+        } else {
+            const { title, description, content, author, authorDetails } = response as TBlogPostSchema
+
+        // const { title, description, content, author } = await getPost(id)
         console.log('From page', id)
         return (
             <main className="flex flex-col items-start justify-start p-4 h-screen">
@@ -26,6 +34,7 @@ export default async function Post({ params }: { params : { id: number } }){
             </div>
         </main>
         )
+        }
     } else {
         console.log('Not logged in')
         redirect('/')

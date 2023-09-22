@@ -3,24 +3,28 @@ import Button from "@/components/Button"
 import { TBlogPostSchema } from "@/lib/types"
 import { remark } from "remark"
 import html from "remark-html"
+import ErrorPage from "@/components/ErrorPage"
 // import matter from "gray-matter"
 import matter  from "gray-matter"
 import { redirect } from "next/navigation"
-// export async function generateStaticParams(){
-//     const responseIds = await getAllPostsIds()
-//     console.log(responseIds)
-//     return responseIds
-// }
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export default async function Post({ params }: { params : { id: number } }){
 
     const loggedIn = await checkSession();
     if(loggedIn === true){
         const { id } = params
-        const { title, description, content, author, authorDetails } = await getPost(id)    
+        const response = await getPost(id)
+        if('code' in response && response.code === 404){
+            return <ErrorPage />
+        } else {
+            const { title, description, content, author, authorDetails } = response as TBlogPostSchema
         // console.log('From page', id)
         // console.log(content)
-        const matterResult = matter(content)
+        
+            const matterResult = matter(content)
         // console.log(matterResult)
         const processedData = await remark().use(html).process(matterResult.content);
         const contentHTML = processedData.toString()
@@ -41,9 +45,9 @@ export default async function Post({ params }: { params : { id: number } }){
                 </div>
             </main>
         );
+        }  
     } else {
         console.log('Not logged in');
         redirect('/');
     }
-    // const { title, description, content, author } = await getPost(id)
 }

@@ -51,6 +51,14 @@ export const loginResponseSchema = z.object({
 });
 
 
+export const notFoundSchema = z.object({
+    name: z.string(),
+    message: z.string(),
+    code: z.number(),
+    className: z.string(),
+});
+
 export type TSignUpSchema = z.infer<typeof signUpSchema>;
 export type TLoginSchema = z.infer<typeof loginSchema>;
 export type TBlogPostSchema = z.infer<typeof blogPostSchema>;
+export type TNotFoundSchema = z.infer<typeof notFoundSchema>;

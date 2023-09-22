@@ -12,15 +12,19 @@ export default async function Home() {
   console.log(loggedIn)
   if(loggedIn === true){
     const response = await getPosts(1, 10)
-    console.log(response)
-    // TODO: Add check for response length, incase there are no posts to display show a message
+    const responseData = await response.json()
+    console.log(responseData)
   return (
-    <main className="flex flex-row flex-wrap items-start justify-around p-4 h-screen">
-      {response.map((post: TBlogPostSchema) => (
+    <>
+    { responseData.response.length === 0 ? <h1 className="text-2xl flex flex-row items-center justify-center font-semibold m-auto text-black">No posts to display</h1> : 
+      <main className="flex flex-row flex-wrap items-start justify-around p-4 h-screen">
+      {responseData.response.map((post: TBlogPostSchema) => (
         <PostTile key={post?.id} postId={post?.id} title={post?.title} description={post?.description} 
         authorDetails={post?.authorDetails} created_at={post?.created_at as string} className="mb-4"/>
       ))}
     </main>
+    }
+    </>
   )
       } else {
         redirect('/')

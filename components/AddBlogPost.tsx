@@ -3,10 +3,12 @@ import { useUserContext } from "@/contexts/user-context";
 import { TBlogPostSchema, blogPostSchema } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 export default function AddBlogPost() {
 
     const { user, setUser } = useUserContext();
+    const [ success, setSuccess ] = useState(true);
     const router = useRouter();
     const { register,
         handleSubmit,
@@ -26,13 +28,20 @@ export default function AddBlogPost() {
             },
         });
         const responseData = await response.json();
-        console.log(responseData.response.id);
-        router.push(`/posts/${responseData.response.id}`)
+        if(responseData.response.code == 401){
+          setSuccess(false);
+        } else {
+          console.log(responseData.response.id);
+          router.push(`/posts/${responseData.response.id}`)
+        }
         // reset();
     }
       
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center gap-y-4 p-4 h-full w-auto">
+          {!success ?
+            <span className="text-red-500 text-sm">You must be logged in to create a post</span>
+            : null}
           <input 
             {...register("title")} 
             type="text"

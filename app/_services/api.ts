@@ -1,6 +1,7 @@
-import { TBlogPostSchema } from '@/lib/types';
+import { TBlogPostSchema, TNotFoundSchema } from '@/lib/types';
 import { cookies } from 'next/headers'
-export async function getPosts(page: number, limit: number): Promise<[]> {
+import { NextResponse } from 'next/server';
+export async function getPosts(page: number, limit: number): Promise<any> {
 
     const cookie = cookies().get('accessToken');
     console.log(cookie?.value)
@@ -11,26 +12,15 @@ export async function getPosts(page: number, limit: number): Promise<[]> {
         },
         cache: 'no-store'
     })
-    const data = await res.json();
-    return data?.data;
+    if(res.status !== 200){
+        return NextResponse.json({success: false, response: []});
+    } else{
+        const data = await res.json();
+        return NextResponse.json({success: true, response: data.data});
+    }
 };
 
-/* export async function getAllPostsIds(): Promise<[]>{
-    const cookie = cookies().get('accessToken');
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts?$select[]=id`,{
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${cookie?.value}`
-        }
-    })
-    const data = await res.json();
-    console.log(data)
-    return data?.data.map((item: { id: number}) => {
-        return{id: item.id.toString()}
-    })
-} */
-
-export async function getPost(id: number): Promise<TBlogPostSchema> {
+export async function getPost(id: number): Promise<TBlogPostSchema | TNotFoundSchema> {
     const cookie = cookies().get('accessToken');
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`,{
         method: 'GET',
@@ -39,8 +29,13 @@ export async function getPost(id: number): Promise<TBlogPostSchema> {
         },
         cache: 'no-store'
     })
+    console.log('RESRESRES')
+    console.log(res)
 
-    return res.json();
+    const data = await res.json();
+    console.log("DATA")
+    console.log(data)
+    return data;
 }
 
 export async function setTokenCookie(cookieName:string, token: string, httpOnly?: boolean): Promise<void> {

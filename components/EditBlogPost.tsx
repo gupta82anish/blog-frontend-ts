@@ -4,6 +4,7 @@ import { TBlogPostSchema, blogPostSchema } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 type EditBlogPostProps = {
@@ -13,9 +14,13 @@ type EditBlogPostProps = {
     postId: number;
 }
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default function EditBlogPost({title, description, content, postId}: EditBlogPostProps) {
 
     // const { user, setUser } = useUserContext();
+    const [ success, setSuccess ] = useState(true);
     const router = useRouter();
     const { register,
         handleSubmit,
@@ -41,13 +46,20 @@ export default function EditBlogPost({title, description, content, postId}: Edit
             cache: 'no-store'
         });
         const responseData = await response.json();
-        console.log(responseData);
-        router.push(`/posts/${postId}`)
+        if(!responseData.success){
+            setSuccess(false);
+        } else {
+            console.log(responseData);
+            router.push(`/posts/${postId}`)
+        }
         // reset();
     }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center gap-y-4 p-4 h-full w-auto">
+            {!success ?
+                <span className="text-red-500 text-sm">Couldn't Edit the post. Please try again</span>
+                : null}
             <input {...register("title")} 
                 type="text"
                 placeholder="Title"

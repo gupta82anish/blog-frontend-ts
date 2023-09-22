@@ -6,7 +6,6 @@ export async function POST(request: Request): Promise<NextResponse>{
     const result: any = blogPostSchema.safeParse(body);
     console.log(result)
     console.log('Calling Create Post')
-    // const { accessToken } = request.headers;
     const accessToken = parse(request.headers.get('cookie') || '').accessToken;
     console.log(accessToken)
 
@@ -27,7 +26,7 @@ export async function POST(request: Request): Promise<NextResponse>{
     });
 
     const responseData = await response.json();
-
+    console.log('response data')
     console.log(responseData)
     return NextResponse.json({response: responseData});
 }

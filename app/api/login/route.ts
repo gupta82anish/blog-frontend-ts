@@ -22,7 +22,7 @@ export async function POST(request: Request): Promise<NextResponse>{
     }
 
 //    console.log(result.data)
-    // TODO: Change the post request to the correct endpoint
+
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authentication`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -35,8 +35,8 @@ export async function POST(request: Request): Promise<NextResponse>{
     const resData: unknown = await res.json();
     // console.log(resData)
     const parsedResponse: any = loginResponseSchema.safeParse(resData);
-    console.log(parsedResponse.data)
-    let zorResponseErrors = {};
+    console.log(parsedResponse)
+    let zodResponseErrors = {};
     if(!parsedResponse.success){
         console.log('Unsuccessful Login')
         console.log(parsedResponse.error.flatten())
@@ -50,7 +50,6 @@ export async function POST(request: Request): Promise<NextResponse>{
             console.log('User session valid Cookie Set')
         });
     }
-    // TODO: Handle Failed Login gracefully
     
     return NextResponse.json({response: parsedResponse.data?.user});
 }

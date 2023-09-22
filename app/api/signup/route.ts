@@ -30,11 +30,15 @@ export async function POST(request: Request): Promise<NextResponse>{
     });
 
     const resData: unknown = await res.json();
+    console.log('Signup Response')
+    console.log(resData)
     const parsedResponse:any  = signupResponseSchema.safeParse(resData);
+    // console.log(parsedResponse.error)
     let zodResponseErrors = {};
     if(!parsedResponse.success){
         console.log('Unsuccessful Signup')
-        console.log(parsedResponse.error.flatten())
+        // console.log(parsedResponse.error.flatten())
+        return NextResponse.json({failure: true});
     } else {
         console.log('Successful Signup')
         setTokenCookie('accessToken', parsedResponse.data.accessToken, true).then(() => {

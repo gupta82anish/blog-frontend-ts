@@ -3,11 +3,12 @@ import { useUserContext } from '@/contexts/user-context';
 import { TSignUpSchema, signUpSchema } from '@/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import { set, useForm } from 'react-hook-form';
 
 export default function SignupForm() {
   const { user, setUser } = useUserContext();
+  const [ success, setSuccess ] = useState(true);
   const router = useRouter();
   const { 
     register,
@@ -28,22 +29,16 @@ export default function SignupForm() {
     });
     const responseData = await response.json();
     console.log(responseData);
-    localStorage.setItem('user', JSON.stringify(responseData.response)); 
-    setUser(responseData.response);
-    router.push('/posts')
-    // TODO: Handle success and error properly
-    /* if (!response.ok) {
-      alert("submitting form failed");
-      return;
+    if(responseData.failure) {
+      console.log(responseData)
+      setSuccess(false);
+    } else {
+      localStorage.setItem('user', JSON.stringify(responseData.response)); 
+      setUser(responseData.response);
+      reset();
+      router.push('/posts')
     }
-
-    if(responseData.errors) {
-      const errors = responseData.errors;
-      setError("email", {
-        type: "server",
-        message: responseData.error
-      })
-    } */
+  
   }
 
   return (
@@ -69,6 +64,8 @@ export default function SignupForm() {
        {errors.password && (
         <span className='text-red-500'>{errors.password.message}</span>
        )}
+       {!success && (
+         <span className='text-red-500'>Email already exists</span> )}
       <button disabled={isSubmitting} type="submit" className='bg-blue-500 text-lg hover:bg-blue-600 disabled:bg-gray-500 py-2 rounded text-white w-full'>Submit</button>
     </form>
   );
