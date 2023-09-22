@@ -5,7 +5,7 @@ export async function getPosts(page: number, limit: number): Promise<any> {
 
     const cookie = cookies().get('accessToken');
     console.log(cookie?.value)
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts?$limit=10&$skip=${(page - 1)*10}`,{
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`,{
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${cookie?.value}`
