@@ -58,7 +58,7 @@ export default function EditBlogPost({title, description, content, postId}: Edit
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center gap-y-4 p-4 h-full w-auto">
             {!success ?
-                <span className="text-red-500 text-sm">Couldn't Edit the post. Please try again</span>
+                <span className="text-red-500 text-sm">Could not edit the post. Please try again</span>
                 : null}
             <input {...register("title")} 
                 type="text"
