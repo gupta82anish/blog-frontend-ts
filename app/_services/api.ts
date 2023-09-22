@@ -16,7 +16,7 @@ export async function getPosts(page: number, limit: number): Promise<any> {
         return NextResponse.json({success: false, response: []});
     } else{
         const data = await res.json();
-        return NextResponse.json({success: true, response: data.data});
+        return NextResponse.json({success: true, response: data});
     }
 };
 
