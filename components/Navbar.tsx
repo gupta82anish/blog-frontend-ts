@@ -13,10 +13,8 @@ export default function Navbar() {
     useEffect(() => {
         const userString = localStorage.getItem('user');
         if (userString && userString !== 'undefined') {
-            // console.log(userString);
             setUser(JSON.parse(userString));
         } else{
-            console.log('no user');
             setUser({});
             if(pathname !== '/signup'){
                 router.push('/');

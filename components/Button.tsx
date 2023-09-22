@@ -28,7 +28,6 @@ export default function Button({ text, backgroundColor, fontSize, functionality,
         },
       });
       const resData = await response.json();
-      console.log(resData);
       if(resData.success){
         router.push('/posts');
       }

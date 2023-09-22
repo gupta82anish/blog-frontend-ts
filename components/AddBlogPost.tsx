@@ -19,7 +19,6 @@ export default function AddBlogPost() {
     });
 
     const onSubmit = async (data: TBlogPostSchema) => {
-      console.log('ON SUBMIT')
         const response = await fetch('/api/createpost', {
             method: 'POST',
             body: JSON.stringify({...data, id: user.id}),
@@ -31,7 +30,6 @@ export default function AddBlogPost() {
         if(responseData.response.code == 401){
           setSuccess(false);
         } else {
-          console.log(responseData.response.id);
           router.push(`/posts/${responseData.response.id}`)
         }
         // reset();

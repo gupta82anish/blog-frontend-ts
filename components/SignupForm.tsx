@@ -28,9 +28,7 @@ export default function SignupForm() {
       },
     });
     const responseData = await response.json();
-    console.log(responseData);
     if(responseData.failure) {
-      console.log(responseData)
       setSuccess(false);
     } else {
       localStorage.setItem('user', JSON.stringify(responseData.response)); 

@@ -9,11 +9,9 @@ export const revalidate = 0
 export default async function Home() {
 
   const loggedIn = await checkSession()
-  console.log(loggedIn)
   if(loggedIn === true){
     const response = await getPosts(1, 10)
     const responseData = await response.json()
-    console.log(responseData)
   return (
     <>
     { responseData.response.length === 0 ? <h1 className="text-2xl flex flex-row items-center justify-center font-semibold m-auto text-black">No posts to display</h1> : 

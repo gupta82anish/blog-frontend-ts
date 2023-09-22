@@ -4,10 +4,8 @@ import { parse } from "cookie";
 export async function POST(request: Request): Promise<NextResponse>{
     const body:unknown = await request.json();
     const result: any = blogPostSchema.safeParse(body);
-    console.log(result)
-    console.log('Calling Create Post')
+
     const accessToken = parse(request.headers.get('cookie') || '').accessToken;
-    console.log(accessToken)
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`, {
         method: 'POST',
@@ -26,7 +24,6 @@ export async function POST(request: Request): Promise<NextResponse>{
     });
 
     const responseData = await response.json();
-    console.log('response data')
-    console.log(responseData)
+
     return NextResponse.json({response: responseData});
 }

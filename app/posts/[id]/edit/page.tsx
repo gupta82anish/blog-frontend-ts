@@ -4,11 +4,6 @@ import ErrorPage from "@/components/ErrorPage";
 import { TBlogPostSchema } from "@/lib/types"
 import { redirect } from "next/navigation";
 
-// export async function generateStaticParams(){
-//     const responseIds = await getAllPostsIds()
-//     console.log(responseIds)
-//     return responseIds
-// }
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -24,8 +19,6 @@ export default async function Post({ params }: { params : { id: number } }){
         } else {
             const { title, description, content, author, authorDetails } = response as TBlogPostSchema
 
-        // const { title, description, content, author } = await getPost(id)
-        console.log('From page', id)
         return (
             <main className="flex flex-col items-start justify-start p-4 h-screen">
             <div className="container max-w-none bg-white p-8 rounded-lg shadow-md space-y-4">
@@ -36,7 +29,6 @@ export default async function Post({ params }: { params : { id: number } }){
         )
         }
     } else {
-        console.log('Not logged in')
         redirect('/')
     }
 }

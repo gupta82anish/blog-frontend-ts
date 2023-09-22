@@ -4,22 +4,16 @@ import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request): Promise<NextResponse>{
-    // console.log('GET')
+
     return NextResponse.json({success: true});
 }
 
 export async function PATCH(request: Request): Promise<NextResponse>{
     const body:unknown = await request.json();
-    console.log(body)
     const result: any = blogPostSchema.safeParse(body);
-    console.log(result)
-    console.log('Calling Create Post')
     // const { accessToken } = request.headers;
     const accessToken = parse(request.headers.get('cookie') || '').accessToken;
-    console.log(request.headers)
     const postId = request.headers.get('post-id');
-    console.log('POST ID',postId)
-    console.log(accessToken)
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${postId}`, {
         method: 'PATCH',
@@ -45,10 +39,7 @@ export async function PATCH(request: Request): Promise<NextResponse>{
 export async function DELETE(request: Request): Promise<NextResponse>{
 
     const accessToken = parse(request.headers.get('cookie') || '').accessToken;
-    console.log(request.headers)
     const postId = request.headers.get('post-id');
-    console.log('POST ID',postId)
-    console.log(accessToken)
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${postId}`, {
         method: 'DELETE',
         headers: {

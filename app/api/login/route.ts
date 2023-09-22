@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request): Promise<NextResponse>{
     const body:unknown = await request.json();
-    // console.log(body);
+    
     const result = loginSchema.safeParse(body);
 
     let zodErrors = {};
@@ -21,7 +21,7 @@ export async function POST(request: Request): Promise<NextResponse>{
         );    
     }
 
-//    console.log(result.data)
+
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authentication`, {
         method: 'POST',
@@ -33,21 +33,21 @@ export async function POST(request: Request): Promise<NextResponse>{
         })
     });
     const resData: unknown = await res.json();
-    // console.log(resData)
+    
     const parsedResponse: any = loginResponseSchema.safeParse(resData);
-    console.log(parsedResponse)
+    
     let zodResponseErrors = {};
     if(!parsedResponse.success){
-        console.log('Unsuccessful Login')
-        console.log(parsedResponse.error.flatten())
+        
+        
         return NextResponse.json({failure: true});
     } else {
-        console.log('Successful Login')
+        
         setTokenCookie('accessToken', parsedResponse.data.accessToken, true).then(() => {
-            console.log('Cookie Set')
+            
         });
         setTokenCookie('loggedIn', 'true').then(() => {
-            console.log('User session valid Cookie Set')
+            
         });
     }
     

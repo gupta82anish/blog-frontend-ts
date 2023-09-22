@@ -21,15 +21,11 @@ export default async function Post({ params }: { params : { id: number } }){
             return <ErrorPage />
         } else {
             const { title, description, content, author, authorDetails } = response as TBlogPostSchema
-        // console.log('From page', id)
-        // console.log(content)
         
             const matterResult = matter(content)
-        // console.log(matterResult)
         const processedData = await remark().use(html).process(matterResult.content);
         const contentHTML = processedData.toString()
 
-        // console.log(contentHTML)
         return (
             <main className="p-8 bg-white text-black max-w-screen-lg mx-auto">
                 <div className="mb-8">
@@ -47,7 +43,6 @@ export default async function Post({ params }: { params : { id: number } }){
         );
         }  
     } else {
-        console.log('Not logged in');
         redirect('/');
     }
 }

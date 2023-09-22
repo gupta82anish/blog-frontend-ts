@@ -35,7 +35,6 @@ export default function EditBlogPost({title, description, content, postId}: Edit
     });
 
     const onSubmit = async (data: TBlogPostSchema) => {
-        console.log('ON SUBMIT')
         const response = await fetch('/api/posts', {
             method: 'PATCH',
             body: JSON.stringify(data),
@@ -49,7 +48,6 @@ export default function EditBlogPost({title, description, content, postId}: Edit
         if(!responseData.success){
             setSuccess(false);
         } else {
-            console.log(responseData);
             router.push(`/posts/${postId}`)
         }
         // reset();

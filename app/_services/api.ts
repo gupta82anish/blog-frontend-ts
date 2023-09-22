@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server';
 export async function getPosts(page: number, limit: number): Promise<any> {
 
     const cookie = cookies().get('accessToken');
-    console.log(cookie?.value)
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`,{
         method: 'GET',
         headers: {
@@ -29,12 +28,8 @@ export async function getPost(id: number): Promise<TBlogPostSchema | TNotFoundSc
         },
         cache: 'no-store'
     })
-    console.log('RESRESRES')
-    console.log(res)
 
     const data = await res.json();
-    console.log("DATA")
-    console.log(data)
     return data;
 }
 
