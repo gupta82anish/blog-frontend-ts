@@ -34,7 +34,6 @@ export async function POST(request: Request): Promise<NextResponse>{
         });
         
         if(res.status !== 201){
-            console.log('Post request failed')
             return NextResponse.json({failure: true});
         }
 
@@ -59,8 +58,7 @@ export async function POST(request: Request): Promise<NextResponse>{
         
         return NextResponse.json({response: parsedResponse.data?.user});
 
-} catch(err){
-        console.log(err);
+    } catch(err){
         return NextResponse.json({serverError: true});
     }
     

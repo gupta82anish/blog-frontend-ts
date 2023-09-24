@@ -20,7 +20,6 @@ export async function getPosts(page: number, limit: number): Promise<any> {
             return NextResponse.json({success: true, response: data});
         }
     } catch(err){
-        console.log(err)
         return NextResponse.json({serverError: true, response: []});
     }
 };
