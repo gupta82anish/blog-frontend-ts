@@ -34,12 +34,12 @@ export async function getPost(id: number): Promise<TBlogPostSchema | TNotFoundSc
 }
 
 export async function setTokenCookie(cookieName:string, token: string, httpOnly?: boolean): Promise<void> {
-    const oneDay = 24 * 60 * 60
+    const threeDay = 24 * 60 * 60 * 3
     cookies().set({
         name: cookieName,
         value: token,
         httpOnly: httpOnly || false,
-        maxAge: oneDay,
+        maxAge: threeDay,
     })
 }
 

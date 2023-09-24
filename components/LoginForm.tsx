@@ -3,10 +3,16 @@ import { useUserContext } from '@/contexts/user-context';
 import { TLoginSchema, loginSchema } from '@/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
+import { type } from 'os';
 import React, { useState } from 'react';
 import { set, useForm } from 'react-hook-form';
 
-export default function LoginForm() {
+type LoginFormProps = {
+  hasCookie: boolean;
+}
+
+export default function LoginForm({ hasCookie }: LoginFormProps) {
+
   const router = useRouter();
   const { user, setUser } = useUserContext();
   const [ success, setSuccess ] = useState(true);
@@ -72,7 +78,7 @@ export default function LoginForm() {
         type="submit" 
         className="bg-blue-500 text-lg hover:bg-blue-600 disabled:bg-gray-500 py-2 rounded text-white w-full"
       >
-        Submit
+        {isSubmitting ? 'Logging in...' : 'Login'}
       </button>
     </form>
   );
