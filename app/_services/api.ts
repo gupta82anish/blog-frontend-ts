@@ -3,19 +3,25 @@ import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server';
 export async function getPosts(page: number, limit: number): Promise<any> {
 
-    const cookie = cookies().get('accessToken');
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`,{
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${cookie?.value}`
-        },
-        cache: 'no-store'
-    })
-    if(res.status !== 200){
-        return NextResponse.json({success: false, response: []});
-    } else{
-        const data = await res.json();
-        return NextResponse.json({success: true, response: data});
+
+    try{
+        const cookie = cookies().get('accessToken');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`,{
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${cookie?.value}`
+            },
+            cache: 'no-store'
+        })
+        if(res.status !== 200){
+            return NextResponse.json({success: false, response: []});
+        } else{
+            const data = await res.json();
+            return NextResponse.json({success: true, response: data});
+        }
+    } catch(err){
+        console.log(err)
+        return NextResponse.json({serverError: true, response: []});
     }
 };
 

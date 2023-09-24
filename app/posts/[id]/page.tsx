@@ -18,7 +18,7 @@ export default async function Post({ params }: { params : { id: number } }){
         const { id } = params
         const response = await getPost(id)
         if('code' in response && response.code === 404){
-            return <ErrorPage />
+            return <ErrorPage serverError={false}/>
         } else {
             const { title, description, content, author, authorDetails } = response as TBlogPostSchema
         

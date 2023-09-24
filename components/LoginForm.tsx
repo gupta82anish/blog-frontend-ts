@@ -15,7 +15,10 @@ export default function LoginForm({ hasCookie }: LoginFormProps) {
 
   const router = useRouter();
   const { user, setUser } = useUserContext();
-  const [ success, setSuccess ] = useState(true);
+  const [ success, setSuccess ] = useState({
+    loginSuccess: false,
+    serverError: false
+  });
   const { 
     register,
     handleSubmit,
@@ -35,8 +38,12 @@ export default function LoginForm({ hasCookie }: LoginFormProps) {
     });
     const responseData = await response.json();
     if(responseData.failure) {
-      setSuccess(false);
-    } else {
+      setSuccess({loginSuccess: true, serverError: false});
+    } 
+    else if(responseData.serverError) {
+      setSuccess({...success, serverError: true});
+    }
+    else {
       localStorage.setItem('user', JSON.stringify(responseData.response));
       setUser(responseData.response);
       reset();
@@ -70,8 +77,11 @@ export default function LoginForm({ hasCookie }: LoginFormProps) {
       {errors.password && (
         <span className="text-red-500 text-sm">{errors.password.message}</span>
       )}
-      { !success && (
+      { success.loginSuccess && (
         <span className="text-red-500 text-sm">Incorrect Email or password</span>
+      )}
+      { success.serverError && (
+        <span className="text-red-500 text-sm">Server Error. Please try again in a while</span>
       )}
       <button 
         disabled={isSubmitting} 

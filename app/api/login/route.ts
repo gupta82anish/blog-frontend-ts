@@ -22,36 +22,48 @@ export async function POST(request: Request): Promise<NextResponse>{
     }
 
 
+    try{
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authentication`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                strategy: 'local',
+                email: result.data.email,
+                password: result.data.password,
+            })
+        });
+        
+        if(res.status !== 201){
+            console.log('Post request failed')
+            return NextResponse.json({failure: true});
+        }
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authentication`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            strategy: 'local',
-            email: result.data.email,
-            password: result.data.password,
-        })
-    });
-    const resData: unknown = await res.json();
-    
-    const parsedResponse: any = loginResponseSchema.safeParse(resData);
-    
-    let zodResponseErrors = {};
-    if(!parsedResponse.success){
+        const resData: unknown = await res.json();
         
+        const parsedResponse: any = loginResponseSchema.safeParse(resData);
         
-        return NextResponse.json({failure: true});
-    } else {
-        
-        setTokenCookie('accessToken', parsedResponse.data.accessToken, true).then(() => {
+        let zodResponseErrors = {};
+        if(!parsedResponse.success){
             
-        });
-        setTokenCookie('loggedIn', 'true').then(() => {
             
-        });
+            return NextResponse.json({failure: true});
+        } else {
+            
+            setTokenCookie('accessToken', parsedResponse.data.accessToken, true).then(() => {
+                
+            });
+            setTokenCookie('loggedIn', 'true').then(() => {
+                
+            });
+        }
+        
+        return NextResponse.json({response: parsedResponse.data?.user});
+
+} catch(err){
+        console.log(err);
+        return NextResponse.json({serverError: true});
     }
     
-    return NextResponse.json({response: parsedResponse.data?.user});
 }
 
 export async function DELETE(request: Request): Promise<NextResponse>{
