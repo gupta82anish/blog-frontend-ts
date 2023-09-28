@@ -3,9 +3,8 @@ import { useUserContext } from '@/contexts/user-context';
 import { TLoginSchema, loginSchema } from '@/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { type } from 'os';
 import React, { useState } from 'react';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 type LoginFormProps = {
   hasCookie: boolean;
